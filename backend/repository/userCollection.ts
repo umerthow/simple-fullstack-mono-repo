@@ -9,5 +9,21 @@ export const getUser = async (id: string): Promise<User | null> => {
 };
 
 export const updateUser = async (id: string, data: Partial<User>): Promise<void> => {
+  const user = await getUser(id)
+  if (!user) {
+    throw new Error("user_not_found")
+  }
+  
   await db.collection(USERS_COLLECTION).doc(id).set(data, { merge: true });
+};
+
+export const getAllUsers = async (): Promise<User[]> => {
+  const snapshot = await db.collection(USERS_COLLECTION).get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as Omit<User, 'id'>) }));
+};
+
+export const addUser = async (user: User): Promise<string> => {
+  await db.collection(USERS_COLLECTION).doc(user.id).set(user);
+
+  return user.id
 };

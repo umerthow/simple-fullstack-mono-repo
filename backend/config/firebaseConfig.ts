@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 if (!admin.apps.length) {
-  admin.initializeApp({
+  const test = admin.initializeApp({
     credential: admin.credential.applicationDefault()
   });
 }
