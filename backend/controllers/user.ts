@@ -33,6 +33,9 @@ export const updateUserData = async (req: Request, res: Response) => {
   const data: Partial<User> = req.body;
 
   try {
+    const user = await getUser(userId);
+    if (!user) return res.status(404).json(errorResponse("user_not_found"));
+
     await updateUser(userId, data);
     return res
       .status(200)

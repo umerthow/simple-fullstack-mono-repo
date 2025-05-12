@@ -9,11 +9,6 @@ export const getUser = async (id: string): Promise<User | null> => {
 };
 
 export const updateUser = async (id: string, data: Partial<User>): Promise<void> => {
-  const user = await getUser(id)
-  if (!user) {
-    throw new Error("user_not_found")
-  }
-  
   await db.collection(USERS_COLLECTION).doc(id).set(data, { merge: true });
 };
 
